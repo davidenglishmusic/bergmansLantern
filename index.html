@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>bergmansLantern</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="js/lantern.js"></script>
+<link rel="stylesheet" href="css/style.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<h1>bergmansLantern</h1>
+<h2>a jquery based slideshow builder</h2>
+<div id="Notes">
+<ul>
+  <li>jQuery is required so make sure to include a link to the library in the header area of your pages<br>Here is a quick link that you can copy:<br><div id="jQueryLibraryLink">&lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js&quot;&gt;&lt;/script&gt;</div></li>
+  <li>The slideshows generated here work best if you have prepared your images before hand, cropping and setting them to one resolution<br>On the Mac, you can use the Preview app to quickly do this.</li>
+  <li>November 19, 2013 - now with links</li>
+</ul>
+</div>
+<form id="slideshowConfig">
+<h2>Fill out the following form and you will create the necessary embed code as well as a preview of the slideshow</h2>
+<p>Let us start with the URLs for the images - you can enable each as a link as well entering a target URL as well (note that the placeholder will be considered as a blank):</p>
+<fieldset id="imageURLs">
+<div class="lanternInputLine">Image 1
+<input type="text" id="image1" class="lanternSlideImage" placeholder="http://mydomain.com/image1.png" /> Link 1 <input type="text" id="link1" class="lanternSlideLink" placeholder="http://mydomain.com/page1.html" /></div>
+<div class="lanternInputLine">Image 2
+<input type="text" id="image2" class="lanternSlideImage" placeholder="http://mydomain.com/image2.jpg" /> Link 2 <input type="text" id="link2" class="lanternSlideLink" placeholder="http://mydomain.com/page2.html" /></div>
+</fieldset>
+<input type="button" id="addAnotherImage" value="Add another image" />
+<br>
+<p>Select a speed for the slideshow:</p>
+<select name="speed" id="lanternSpeed">
+<option value="slow">slow</option>
+<option value="medium">medium</option>
+<option value="fast">fast</option>
+</select>
+<p>Here you can enter a desired width in pixels or as a percentage ( ie. 960px or 100% ):</p>
+<input type="text" id="lanternWidth" placeholder="960px" />
+<br><br>
+<input type="button" id="lanternGo" value="Create the slideshow" />
+</form>
+<br>
+<div id="lanternCode">
+</div>
+<div id="lanternPreview">
+</div>
+<script>
+var lineNumber = 2;
+$( document ).ready(function() {
+  $("#addAnotherImage").click(function() {
+    lineNumber = lineNumber + 1;
+    var urlLine = '<div class="lanternInputLine">Image ' + lineNumber + ' <input type="text" id="image' + lineNumber + '" class="lanternSlideImage" placeholder="http://mydomain.com/image' + lineNumber + '.jpg" /> Link ' + lineNumber + ' <input type="text" id="link' + lineNumber + '" class="lanternSlideLink" placeholder="http://mydomain.com/page' + lineNumber + '.html" /></div>';
+    $("#imageURLs").append(urlLine);
+  });
+});
+</script>
+
+<script>
+function addPreviewAndCodeToPage(lanternCode, displayCode) {
+  console.log ("Adding to the page is running");
+  $("#lanternPreview").append(lanternCode);
+  $("#lanternCode").append(displayCode);
+}
+
+function createDisplayCode(lanternCode) {
+  displayCode = lanternCode.replace(/\</g,"&lt;");
+  displayCode = displayCode.replace(/\>/g,"&gt;");
+  return displayCode;
+}
+
+function getImageInput() {
+  imageArray = [];
+  $('.lanternInputLine').each(function () {
+    if ($( this ).children( '.lanternSlideImage' ).val().length == 0) {
+      console.log ('An empty line');
+    }
+    else {
+      imageArray.push([$( this ).children( '.lanternSlideImage' ).val(), $( this).children( '.lanternSlideLink' ).val()]);  
+    }
+  });
+  console.log (imageArray);
+  console.log (imageArray.length);
+  return imageArray;
+}
+
+function determineSpeedTime(inputLanternSpeed) {
+  var speedArray = [];
+  if (inputLanternSpeed == "slow") {
+    speedArray.push("7000", "2000");
+  }
+  else if (inputLanternSpeed == "medium") {
+    speedArray.push("5250","1000");
+  }
+  else {
+    speedArray.push("3500","500");
+  }
+  return speedArray;
+}
+
+$( document ).ready( function() {
+  $("#lanternGo").click( function() {
+    $("#lanternPreview").empty();
+    $("#lanternCode").empty();
+    var imageArray = getImageInput();
+    var lanternWidth = $("#lanternWidth").val();
+    var inputLanternSpeed = $("#lanternSpeed").val();
+    var lanternSpeed = determineSpeedTime(inputLanternSpeed);
+    var theatre = new lanternSlideshow(imageArray, lanternWidth, lanternSpeed);
+    var lanternCode = theatre.getEmbedCode(imageArray, lanternWidth, lanternSpeed);
+    console.log ("Here is the code: " + lanternCode);
+    var displayCode = createDisplayCode(lanternCode);
+    $("#lanternCode").show();
+    return addPreviewAndCodeToPage(lanternCode, displayCode);
+  });
+});
+</script>
+</body>
+</html>
