@@ -1,0 +1,65 @@
+<script>
+
+var widthVar = '960';
+var heightVar = '300';
+
+var bergmanContainerCode = '<div id="bergmanSlideContainer" style="width:' + widthVar + 'px;height:' + heightVar + 'px;">';
+
+bergmanFieldSetCode = '';
+
+for (var j=1; j<fieldset.count; j++) {
+  bergmanFieldSetCode = bergmanFieldSetCode + '<div class="lanternSlide" id="slide' + j + '"><img src="' + imageURLArray[j] + '" ></div>';
+}
+
+var bergmanSlidesCode = bergmanUrlFieldSetCode + '</div>';
+
+var bergmanJqueryCode = '$( document ).ready(function() { setTimeout(function() {lanternGo(); },1500); });';
+
+var jquerySlideLines = '';
+
+for (var k=1; k<fieldset.count; k++) {
+  jquerySlideLines = jquerySlideLines + '$("#slide' + k + '").fadeIn( 500 ).delay( 3000 ).fadeOut( 500, function() {'
+}
+
+var lanternJSEnd = 'lanternGo ();' + (k * '});') + '}';
+
+
+var bergmanJsCode = '<script> function lanternGO() {' + jquerySlideLines + lanternJSEnd + bergmanJqueryCode + '</script>'
+
+var bergmanStyleCode = '<style> #bergmanSlideContainer {position:relative;margin-left:auto;margin-right:auto;} .bergmanInner {position:absolute;display:none;} .bergmanInner img{width:100%;} </style>'
+
+var bergmanSlideshowCode = bergmanContainerCode + bergmanSlidesCode + bergmanJSCode + bergmanStyleCode;
+
+
+</script>
+
+
+<div id="bergmanSlideContainer" style="width:960px;height:300px;">
+<div class="bergmanInner" id="slide1">
+<img src="http://davidenglishmusic.com/files/113637/001.png" >
+</div>
+<div class="bergmanInner" id="slide2">
+<img src="http://davidenglishmusic.com/files/113638/002.png" >
+</div>
+<div class="bergmanInner" id="slide3">
+<img src="http://davidenglishmusic.com/files/113639/003.png" >
+</div>
+</div>
+<script>
+function lanternGo() {
+  $("#slide1").fadeIn( 500 ).delay(3000).fadeOut( 500, function() { 
+    $("#slide2").fadeIn( 500 ).delay(3000).fadeOut( 500, function() {
+      $("#slide3").fadeIn( 500 ).delay(3000).fadeOut( 500, function() {
+        lanternGo();
+      });
+    });
+  });
+}
+
+$( document ).ready(function() {
+setTimeout(function() {lanternGo();
+},1500);
+});
+</script>
+
+

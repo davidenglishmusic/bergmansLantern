@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Slideshow Example</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<div id="slideContainer" style="width:960px;height:300px;">
+<div class="lanternSlide" id="slide001">
+<img src="http://davidenglishmusic.com/files/113637/001.png" >
+</div>
+<div class="lanternSlide" id="slide002">
+<img src="http://davidenglishmusic.com/files/113638/002.png" >
+</div>
+<div class="lanternSlide" id="slide003">
+<img src="http://davidenglishmusic.com/files/113639/003.png" >
+</div>
+</div>
+<script>
+function lanternGo() {
+  $("#slide001").fadeIn( 500 ).delay(3000).fadeOut( 500, function() { 
+    $("#slide002").fadeIn( 500 ).delay(3000).fadeOut( 500, function() {
+      $("#slide003").fadeIn( 500 ).delay(3000).fadeOut( 500, function() {
+        slideshowGo();
+      });
+    });
+  });
+}
+
+$( document ).ready(function() {
+setTimeout(function() {lanternGo();
+},1500);
+});
+</script>
+<style>
+#slideContainer {position:relative;margin-left:auto;margin-right:auto;}
+.lanternSlide {position:absolute;display:none;}
+.lanternSlide img{width:100%;}
+</style>
+</div>
+</body>
+</html>
